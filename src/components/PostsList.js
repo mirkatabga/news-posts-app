@@ -24,7 +24,7 @@ class PostsList extends React.Component {
             <div>
                 {this.state.posts.map(post => {
                     return (
-                        <div>
+                        <div key={post.id}>
                             <h2>{post.title}</h2>
                             <br />
                             <p>{post.body}</p>
