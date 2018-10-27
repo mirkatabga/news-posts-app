@@ -1,43 +1,38 @@
 import * as React from "react";
 
-class AddPostForm extends React.Component{
-    constructor(props){
+class AddPostForm extends React.Component {
+    constructor(props) {
         super(props);
         this.onSubmit = this.onSubmit.bind(this);
+        this.onChange = this.onChange.bind(this);
         this.state = {
-            newpost: {
-                text: '',
-                body: ''
-            }
+            title: '',
+            body: ''
         }
+
+
     }
 
-    onSubmit(e){
+    onSubmit(e) {
         e.preventDefault();
-        let {titleInput,  bodyTextArea } = this.refs;
-        this.setState({
-            ...this.state,
-            newpost:{
-                text: titleInput.value,
-                body: bodyTextArea.value
-            }
-        });
+        this.setState({title: '', body: ''});
+    };
 
-        titleInput.value = '';
-        bodyTextArea.value ='';
-        titleInput.focus();
+    onChange(e) {
+        this.setState({[e.target.name]: e.target.value});
     }
 
-    render(){
-        return (            
+    render() {
+        let {title, body} = this.state;
+        return (
             <form onSubmit={this.onSubmit}>
                 <div>
                     <label>Title: </label>
-                    <input name="title" type="text" ref="titleInput"/>
+                    <input name="title" type="text" value={title} onChange={this.onChange} />
                 </div>
                 <div>
                     <label>Body: </label>
-                    <textarea name="body" ref="bodyTextArea"></textarea>
+                    <textarea name="body" value={body} onChange={this.onChange}></textarea>
                 </div>
                 <button type="submit">Submit</button>
             </form>
