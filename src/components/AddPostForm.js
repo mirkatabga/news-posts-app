@@ -1,4 +1,6 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import { addPostActionCreator } from "../actions/postActions";
 
 class AddPostForm extends React.Component {
     constructor(props) {
@@ -9,21 +11,25 @@ class AddPostForm extends React.Component {
             title: '',
             body: ''
         }
-
-
     }
 
     onSubmit(e) {
         e.preventDefault();
+        let post = {
+            title: this.state.title,
+            body: this.state.body,
+        };
+
+        this.props.addPostActionCreator(post);
         this.setState({title: '', body: ''});
     };
 
     onChange(e) {
-        this.setState({[e.target.name]: e.target.value});
+        this.setState({ [e.target.name]: e.target.value });
     }
 
     render() {
-        let {title, body} = this.state;
+        let { title, body } = this.state;
         return (
             <form onSubmit={this.onSubmit}>
                 <div>
@@ -40,4 +46,8 @@ class AddPostForm extends React.Component {
     }
 }
 
-export default AddPostForm;
+const mapPropsFromState = state => ({
+    post: state.post
+});
+
+export default connect(mapPropsFromState, { addPostActionCreator})(AddPostForm);

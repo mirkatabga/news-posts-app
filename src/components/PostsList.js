@@ -1,28 +1,22 @@
 import * as React from "react";
+import { connect } from "react-redux";
+import { fetchPostsActionCreator } from "../actions/postActions";
 
 class PostsList extends React.Component {
-    constructor(props) {
-        super(props);
-        this.state = {
-            posts: []
-        }
+    componentWillMount() {
+        this.props.fetchPostsActionCreator();
     }
 
-    componentWillMount() {
-        fetch("https://jsonplaceholder.typicode.com/posts")
-        .then(response => response.json())
-        .then(posts => {
-            this.setState({
-                ...this.state,
-                posts: posts,
-            })
-        });
+    componentWillReceiveProps(nextProps){
+        if(nextProps.post && nextProps.post !== {}){
+            this.props.posts.unshift(nextProps.post);
+        }
     }
 
     render() {
         return (
             <div>
-                {this.state.posts.map(post => {
+                {this.props.posts.map(post => {
                     return (
                         <div key={post.id}>
                             <h2>{post.title}</h2>
@@ -36,4 +30,9 @@ class PostsList extends React.Component {
     }
 }
 
-export default PostsList;
+const mapStateToProps = state => ({
+    posts: state.postReducer.posts,
+    post: state.postReducer.post
+});
+
+export default connect(mapStateToProps, {fetchPostsActionCreator})(PostsList);
